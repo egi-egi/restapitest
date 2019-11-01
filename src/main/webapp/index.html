@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Currency Rates Table</title>
+<link rel="stylesheet" type="text/css" href="styles/table.css">
+<link rel="stylesheet" type="text/css" href="styles/button.css">
+
+<script>
+
+function getDataFromDB(){
+	fetch('http://localhost:8082/RestTest/webapi/currencies?usedb=true')
+	.then(function(res){
+		return res.json();
+	})
+	.then(function(data){
+		let output = `<table class="currency-table"><thead><tr><th>Short Name</th><th>Valid From</th><th>Name</th><th>Country</th><th>Amount</th><th>cnbMid</th><th>Currency Buy</th><th>currMid</th><th>Currency Sell</th><th>Move</th><th>valBuy</th><th>valMid</th><th>valSell</th><th>Version</th></tr></thead><tbody>`;
+		data.forEach(function(post){
+			output += `<tr><td>${post.shortName}</td><td>${post.validFrom}</td><td>${post.name}</td><td>${post.country}</td><td>${post.amount}</td><td>${post.cnbMid}</td><td>${post.currencyBuy}</td><td>${post.currMid}</td><td>${post.currencySell}</td><td>${post.move}</td><td>${post.valBuy}</td><td>${post.valMid}</td><td>${post.valSell}</td><td>${post.version}</td></tr>`;
+		});
+		output += `</tbody></table>`;
+		document.getElementById('output').innerHTML = output;
+	})
+}
+
+function getActualData(){
+	fetch('http://localhost:8082/RestTest/webapi/currencies?usedb=false')
+	.then(function(res){
+		return res.json();
+	})
+	.then(function(data){
+		let output = `<table class="currency-table"><thead><tr><th>Short Name</th><th>Valid From</th><th>Name</th><th>Country</th><th>Amount</th><th>cnbMid</th><th>Currency Buy</th><th>currMid</th><th>Currency Sell</th><th>Move</th><th>valBuy</th><th>valMid</th><th>valSell</th><th>Version</th></tr></thead><tbody>`;
+		data.forEach(function(post){
+			output += `<tr><td>${post.shortName}</td><td>${post.validFrom}</td><td>${post.name}</td><td>${post.country}</td><td>${post.amount}</td><td>${post.cnbMid}</td><td>${post.currencyBuy}</td><td>${post.currMid}</td><td>${post.currencySell}</td><td>${post.move}</td><td>${post.valBuy}</td><td>${post.valMid}</td><td>${post.valSell}</td><td>${post.version}</td></tr>`;
+		});
+		output += `</tbody></table>`;
+		document.getElementById('output').innerHTML = output;
+	})
+}
+
+</script>
+
+</head>
+<body>
+<div id=buttons>
+	<button class="btn" onClick="getDataFromDB()">Data From Database</button>
+	<button class="btn" onClick="getActualData()">Actual Data</button>
+</div>
+<div id="output"></div>
+</body>
+</html>
